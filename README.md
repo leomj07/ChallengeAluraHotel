@@ -3,16 +3,6 @@
  ![Luxury Hotel Presentation](https://github.com/leomj07/ChallengeAluraHotel/assets/13156906/82859f50-cd62-4679-831c-5c609714f111)
 
 ---
-
-## 🖥️ Tecnologías Utilizadas:
-
-- Java
-- Eclipse
-- Biblioteca JCalendar
-- MySql
-- Plugin WindowBuilder </br>
-
----
 ## Insignias
 ![GitHub language count](https://img.shields.io/github/languages/count/leomj07/AluraChallengeConversorMonedas)
 ![GitHub top language](https://img.shields.io/github/languages/top/leomj07/AluraChallengeConversorMonedas)
@@ -73,14 +63,19 @@ El programa solo realiza la conversión de monedas, falta por implementar la par
 ## Acceso al Proyecto
 \## 📁 Acceso al proyecto
 **https://github.com/leomj07/AluraChallengeConversorMonedas.git**
+---
+## 🖥️ Tecnologías Utilizadas:
 
-## Tecnologías utilizadas
-      - Java 8
-      - Eclipse
+- Java
+- Eclipse
+- Biblioteca JCalendar
+- MySql
+- Plugin WindowBuilder </br>
+
       
 ## Personas Desarrolladoras del Proyecto
 
-* **Rodriguez Martinez** - *Developer Java* - **[developer](https://github.com/leomj07/AluraChallengeConversorMonedas.git)**
+* **Rodriguez Martinez** - *Developer Java* - **[developer](https://github.com/leomj07/ChallengeAluraHotel.git)**
 
 
 🧡 <strong>Oracle</strong></br>
