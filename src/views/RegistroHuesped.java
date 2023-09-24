@@ -8,7 +8,9 @@ import javax.swing.JTextField;
 import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
 
+import dao.HuespedDao;
 import factory.CrearConexionFactory;
+import modelo.Huesped;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -269,14 +271,15 @@ public class RegistroHuesped extends JFrame {
 			public void mouseClicked(MouseEvent e) {	
 				if (txtNombre.getText() != null && txtApellido.getText() != null && txtFechaN.getDate() != null && txtTelefono.getText() != null) {
 					sqldate = new java.sql.Date(txtFechaN.getDate().getTime());
-					huesped.put("NOMBRE", txtNombre.getText());
-					huesped.put("APELLIDOS", txtApellido.getText());
-					huesped.put("FECHA_NACIMIENTO", String.valueOf(sqldate));
-					huesped.put("NACIONALIDAD", String.valueOf(txtNacionalidad.getSelectedItem()));
-					huesped.put("TELEFONO", txtTelefono.getText());
-					huesped.put("idReserva", String.valueOf(txtNreserva.getText()));
-					gHuesped(huesped);
-				} else {
+					Huesped huesped = new Huesped(txtNombre.getText(),
+							txtApellido.getText(),
+							sqldate,
+							txtNacionalidad.getSelectedItem(),
+							txtTelefono.getText(),
+							txtNreserva.getText());
+			
+							gHuesped(huesped);
+				} else { 
 					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
 				}
 			}
@@ -342,42 +345,9 @@ public class RegistroHuesped extends JFrame {
 		labelExit.setFont(new Font("Roboto", Font.PLAIN, 18));
 	}
 	
-	public void gHuesped(Map<String, String> m) {
-		try {
-			System.out.println(m.get("NOMBRE"));
-			Connection con= new CrearConexionFactory().recuperaConexion();
-			con.setAutoCommit(false);
-			PreparedStatement stm = con.prepareStatement("INSERT INTO HUESPEDES(NOMBRE, APELLIDOS, FECHA_NACIMIENTO, NACIONALIDAD, TELEFONO, idReserva ) "
-					+ " VALUES( ?, ?, ?, ?, ?, ? )", 
-					Statement.RETURN_GENERATED_KEYS);
-			
-			stm.setString(1, m.get("NOMBRE"));
-			stm.setString(2, m.get("APELLIDOS"));
-			stm.setString(3, m.get("FECHA_NACIMIENTO"));
-			stm.setString(4, m.get("NACIONALIDAD"));
-			stm.setString(5, m.get("TELEFONO"));
-			stm.setInt(6,Integer.valueOf(m.get("idReserva")));
-			stm.execute();
-			
-			try {
-				
-				ResultSet rs = stm.getGeneratedKeys();
-				
-				while(rs.next()) {				
-					JOptionPane.showMessageDialog(null, "El registro del huesped se realizo con éxito, el id de reserva es: "+m.get("idReserva"));	
-				}	
-				
-				con.commit();
-			}catch (Exception e){
-				con.rollback();
-			}
-			
-			stm.close();
-			con.close();			
-			
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+	public void gHuesped(Huesped h){
+		HuespedDao huesped = new HuespedDao(new CrearConexionFactory().recuperaConexion());
+		huesped.gHuesped(h);	
 	}
 	
 	//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"	

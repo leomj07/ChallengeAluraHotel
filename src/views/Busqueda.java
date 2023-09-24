@@ -1,4 +1,4 @@
-package views;
+ package views;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -10,7 +10,11 @@ import javax.swing.table.DefaultTableModel;
 import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
 import com.mysql.cj.x.protobuf.MysqlxResultset.FetchSuspendedOrBuilder;
 
+import dao.HuespedDao;
+import dao.ReservasDao;
 import factory.CrearConexionFactory;
+import modelo.Huesped;
+import modelo.Reserva;
 
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -118,12 +122,17 @@ public class Busqueda extends JFrame {
 					System.out.println("Enter");
 					System.out.println(modelo.getValueAt(0,3).toString());
 					Integer i = panel.getSelectedIndex();
-					m.put("ID", modelo.getValueAt(0,0).toString());
-					m.put("FECHA_ENTRADA", modelo.getValueAt(0,1).toString());
-					m.put("FECHA_SALIDA", modelo.getValueAt(0,2).toString());
-					m.put("VALOR", modelo.getValueAt(0,3).toString());
-					m.put("FORMA_PAGO", modelo.getValueAt(0,4).toString());
-					actualizar(m, i);
+					Reserva r = new Reserva(modelo.getValueAt(0,0).toString(),  
+							modelo.getValueAt(0,1).toString(),
+							modelo.getValueAt(0,2).toString(),
+							modelo.getValueAt(0,3).toString(),
+							modelo.getValueAt(0,4).toString());
+					//m.put("ID", modelo.getValueAt(0,0).toString());
+					//m.put("FECHA_ENTRADA", modelo.getValueAt(0,1).toString());
+					//m.put("FECHA_SALIDA", modelo.getValueAt(0,2).toString());
+					//m.put("VALOR", modelo.getValueAt(0,3).toString());
+					//m.put("FORMA_PAGO", modelo.getValueAt(0,4).toString());
+					actualizarReserva(r);
 				}
 			}
 		});
@@ -152,15 +161,22 @@ public class Busqueda extends JFrame {
 				if(e.getKeyCode() == 10) {
 					System.out.println("Enter");
 					System.out.println(modeloHuesped.getValueAt(0,3).toString());
+					Huesped h = new Huesped(modeloHuesped.getValueAt(0,0).toString(),
+							modeloHuesped.getValueAt(0,0).toString(),
+							modeloHuesped.getValueAt(0,2).toString(),
+							modeloHuesped.getValueAt(0,3).toString(),
+							modeloHuesped.getValueAt(0,4).toString(),
+							modeloHuesped.getValueAt(0,5).toString(),
+							modeloHuesped.getValueAt(0,6).toString());
 					Integer i = panel.getSelectedIndex();
-					m.put("ID", modeloHuesped.getValueAt(0,0).toString());
-					m.put("NOMBRE", modeloHuesped.getValueAt(0,1).toString());
-					m.put("APELLIDOS", modeloHuesped.getValueAt(0,2).toString());
-					m.put("FECHA_NACIMIENTO", modeloHuesped.getValueAt(0,3).toString());
-					m.put("NACIONALIDAD", modeloHuesped.getValueAt(0,4).toString());
-					m.put("TELEFONO", modeloHuesped.getValueAt(0,5).toString());
-					m.put("idReserva", modeloHuesped.getValueAt(0,6).toString());
-					actualizar(m, i);
+					//m.put("ID", modeloHuesped.getValueAt(0,0).toString());
+					//m.put("NOMBRE", modeloHuesped.getValueAt(0,1).toString());
+					//m.put("APELLIDOS", modeloHuesped.getValueAt(0,2).toString());
+					//m.put("FECHA_NACIMIENTO", modeloHuesped.getValueAt(0,3).toString());
+					//m.put("NACIONALIDAD", modeloHuesped.getValueAt(0,4).toString());
+					//m.put("TELEFONO", modeloHuesped.getValueAt(0,5).toString());
+					//m.put("idReserva", modeloHuesped.getValueAt(0,6).toString());
+					actualizarHuesped(h);
 				}
 			}
 		});
@@ -273,7 +289,13 @@ public class Busqueda extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				buscar(txtBuscar.getText(), panel.getSelectedIndex());
+				//buscar(txtBuscar.getText(), panel.getSelectedIndex());
+				if(panel.getSelectedIndex() == 0) {
+					buscarReserva( txtBuscar.getText(),modelo);
+				}else {
+					buscarHuesped( txtBuscar.getText(),modeloHuesped);
+				}
+				
 			}
 		});
 		btnbuscar.setLayout(null);
@@ -326,9 +348,9 @@ public class Busqueda extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				Integer i = panel.getSelectedIndex();
 				if(i == 0) {
-					eliminar(modelo.getValueAt(tbReservas.getSelectedRow(),0).toString(), i);
+					eliminarReserva(modelo.getValueAt(tbReservas.getSelectedRow(),0).toString());
 				}else {
-					eliminar(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(),0).toString(), i);
+					eliminarHuesped(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(),0).toString());
 				}
 				
 			}
@@ -341,178 +363,51 @@ public class Busqueda extends JFrame {
 		setResizable(false);
 	}
 	
-	public void actualizar(Map<String, String> m, Integer i) {
-		System.out.println("Actualizando"+i);
-		System.out.println(m.get("VALOR"));
-		
-		if(i == 0) {
-			try {
-				Connection con= new CrearConexionFactory().recuperaConexion();
-				PreparedStatement pt = con.prepareStatement("UPDATE RESERVAS SET"
-				+" FECHA_ENTRADA =?"
-				+", FECHA_SALIDA = ?"
-				+", VALOR= ?"
-				+", FORMA_PAGO= ?"
-				+" WHERE ID = ?");
-				
-				pt.setString(1, m.get("FECHA_ENTRADA"));
-				pt.setString(2, m.get("FECHA_SALIDA"));
-				pt.setString(3, m.get("VALOR"));
-				pt.setString(4, m.get("FORMA_PAGO"));
-				pt.setInt(5,Integer.valueOf(m.get("ID")));
-				
-				pt.execute();
-				
-				Integer actualizado = pt.getUpdateCount();			
-				System.out.println("Actualizado "+ actualizado);
-				 
-				pt.close();
-				
-				
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-		}else {
-			try {
-				System.out.println(m.get("ID"));
-				Connection con= new CrearConexionFactory().recuperaConexion();
-				PreparedStatement pr = con.prepareStatement("UPDATE HUESPEDES SET"
-						+ " NOMBRE = ? "
-						+ ", APELLIDOS = ?"
-						+ ", FECHA_NACIMIENTO = ? "
-						+ ", NACIONALIDAD = ? "
-						+ ", TELEFONO = ? "
-						+ ", idReserva = ? "
-						+ " WHERE ID = ?; ");
-				
-				pr.setString(1, m.get("NOMBRE"));
-				pr.setString(2, m.get("APELLIDOS"));
-				pr.setString(3, m.get("FECHA_NACIMIENTO"));
-				pr.setString(4, m.get("NACIONALIDAD"));
-				pr.setString(5, m.get("TELEFONO"));
-				pr.setInt(6, Integer.valueOf(m.get("idReserva")));
-				pr.setInt(7, Integer.valueOf(m.get("ID")));
-	
-				pr.execute();
-				
-				Integer actualizado = pr.getUpdateCount();		
-				System.out.println("Actualizado "+ actualizado);
-				 
-				pr.close();
-				
-				
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		
+	public void actTbReserva() {
+		for (int row = 0; row < tbReservas.getRowCount(); row++) {
+	        modelo.removeRow(row);
+	    }
 	}
 	
-	public void eliminar(String id, Integer i) {
-		if(i == 0) {
-			try {
-				for (int row = 0; row < tbReservas.getRowCount(); row++) {
-		            modelo.removeRow(row);
-		        }
-					System.out.println(id);
-					final Connection con = new CrearConexionFactory().recuperaConexion();
-					try(con){
-						con.setAutoCommit(false);
-						final PreparedStatement stm = con.prepareStatement("DELETE FROM RESERVAS WHERE id = ?");			
-						try(stm){
-							con.setAutoCommit(false);
-							stm.setString(1, id);
-							stm.execute();
-						    Integer Eliminado = stm.getUpdateCount();
-						    JOptionPane.showMessageDialog(null, "El usuario se elimino con exito con éxito, el id es: "+ id);
-						    System.out.println("Eliminado "+ Eliminado);
-						    con.commit();
-						}catch(Exception e) {
-							con.rollback();
-						}
-					}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}else {
-			try {
-				for (int row = 0; row < tbHuespedes.getRowCount(); row++) {
-		            modeloHuesped.removeRow(row);
-		        }
-					System.out.println(id);
-					final Connection con = new CrearConexionFactory().recuperaConexion();
-					try(con){
-						con.setAutoCommit(false);
-						final PreparedStatement stm = con.prepareStatement("DELETE FROM HUESPEDES WHERE id = ?");
-						try(stm){
-							stm.setString(1, id);
-							stm.execute();
-						    Integer Eliminado = stm.getUpdateCount();
-						    JOptionPane.showMessageDialog(null, "El usuario se elimino con exito con éxito, el id es: "+ id);
-						    System.out.println("Eliminado "+ Eliminado);
-						    con.commit();
-						}catch (Exception e) {
-							con.rollback();
-						}
-					}
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		}	
+	public void actTbHuesped() {
+		for (int row = 0; row < tbHuespedes.getRowCount(); row++) {
+            modeloHuesped.removeRow(row);
+        }
 	}
 	
-	public void buscar(String b, Integer i) {	
-		System.out.println("Entero"+ i);
-		try {
-			if(i == 0) {
-				
-				for (int row = 0; row < tbReservas.getRowCount(); row++) {
-		            modelo.removeRow(row);
-		        }
-				Connection con = new CrearConexionFactory().recuperaConexion();
-				PreparedStatement stm = con.prepareStatement("SELECT ID, FECHA_ENTRADA, FECHA_SALIDA, VALOR, FORMA_PAGO FROM RESERVAS"
-						+ " WHERE id = ?");
-				stm.setString(1, b);
-				ResultSet set = stm.executeQuery();
-								
-				while(set.next()) {	
-					modelo.addRow(new Object[] {set.getInt("ID"), 
-							set.getString("FECHA_ENTRADA"),
-							set.getString("FECHA_SALIDA"), 
-							set.getInt("VALOR"), 
-							set.getString("FORMA_PAGO" )});
-				}
-				con.close();
-			}else {
-				
-				for (int row = 0; row < tbHuespedes.getRowCount(); row++) {
-		            modeloHuesped.removeRow(row);
-		        }
-				
-				Connection con = new CrearConexionFactory().recuperaConexion();
-				PreparedStatement stm = con.prepareStatement("SELECT ID, NOMBRE, APELLIDOS, FECHA_NACIMIENTO, NACIONALIDAD, TELEFONO, idReserva "
-						+ "FROM HUESPEDES WHERE APELLIDOS = ?");
-				stm.setString(1, b);
-				ResultSet set = stm.executeQuery();
-								
-				while(set.next()) {
-					modeloHuesped.addRow(new Object[] {set.getInt("ID"), 
-							set.getString("NOMBRE"),
-							set.getString("APELLIDOS"),
-							set.getString("FECHA_NACIMIENTO"),
-							set.getString("NACIONALIDAD"), 
-							set.getString("TELEFONO" ),
-							set.getString("idReserva" )});
-				}
-				con.close();
-			}	
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			//throw new RuntimeException(e);
-			JOptionPane.showMessageDialog(this, "ID de reserva o Apellido incorrecto");
-		}
-		
+	public void actualizarReserva(Reserva r) {
+			ReservasDao rd = new ReservasDao(new CrearConexionFactory().recuperaConexion());
+			rd.actualizarReserva(r);
+	}
+	
+	public void actualizarHuesped(Huesped h) {
+			HuespedDao hd = new HuespedDao(new CrearConexionFactory().recuperaConexion());
+			hd.actualizarHuesped(h);
+	}
+	
+	public void eliminarReserva(String id) {
+		actTbReserva();
+		ReservasDao rd = new ReservasDao(new CrearConexionFactory().recuperaConexion());
+		rd.eliminarReserva(id);			
+	}
+	
+	public void eliminarHuesped(String id) {
+		actTbHuesped();
+		HuespedDao hd = new HuespedDao(new CrearConexionFactory().recuperaConexion());
+		hd.eliminarHuesped(id);
+	}
+	
+	public void buscarReserva(String b, DefaultTableModel modelo) {	
+				actTbReserva();
+				ReservasDao rd = new ReservasDao(new CrearConexionFactory().recuperaConexion());
+				rd.buscarReserva(b, modelo);
+
+	}
+	
+	public void buscarHuesped(String b, DefaultTableModel modelo) {
+		actTbHuesped();
+		HuespedDao hd = new HuespedDao(new CrearConexionFactory().recuperaConexion());
+		hd.buscarHuesped(b, modelo);
 	}
 	
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"

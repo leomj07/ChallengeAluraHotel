@@ -14,7 +14,9 @@ import javax.swing.JTextField;
 import com.mchange.v2.sql.filter.SynchronizedFilterDataSource;
 import com.toedter.calendar.JDateChooser;
 
+import dao.ReservasDao;
 import factory.CrearConexionFactory;
+import modelo.Reserva;
 
 import java.awt.Font;
 import javax.swing.JComboBox;
@@ -54,7 +56,6 @@ public class ReservasView extends JFrame {
 	private JLabel labelExit;
 	private JLabel labelAtras;
 	private Date sqldate, sqldate1;
-	private Map<String, String> reserva = new HashMap<>();
 	public int idReserva;
 
 	/** 
@@ -329,11 +330,8 @@ public class ReservasView extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {	
-					reserva.put("FECHA_ENTRADA", String.valueOf(sqldate1));
-					reserva.put("FECHA_SALIDA", String.valueOf(sqldate));
-					reserva.put("VALOR", String.valueOf(txtValor.getText()));
-					reserva.put("FORMA_PAGO", String.valueOf(txtFormaPago.getSelectedItem()));
-					gReserva(reserva);
+					Reserva r = new Reserva(sqldate1, sqldate, txtValor.getText(),txtFormaPago.getSelectedItem());
+					gReserva(r);
 				} else {
 					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
 				}
@@ -362,48 +360,10 @@ public class ReservasView extends JFrame {
 		btnsiguiente.add(lblNewLabel);
 
 	}
-		
-	public int getIdReserva() {
-		return idReserva;
-	}
 
-	public void setIdReserva(int idReserva) {
-		this.idReserva = idReserva;
-	}
-
-	public void gReserva(Map<String, String> m) {
-		try {
-			final Connection con= new CrearConexionFactory().recuperaConexion();
-			try(con){
-				con.setAutoCommit(false);
-				final PreparedStatement stm = con.prepareStatement("INSERT INTO RESERVAS(FECHA_ENTRADA, FECHA_SALIDA, VALOR, FORMA_PAGO) VALUES("
-						+ "?, ?, ?, ?)", 
-						Statement.RETURN_GENERATED_KEYS);
-			
-				try(stm){
-					stm.setString(1, m.get("FECHA_ENTRADA"));
-					stm.setString(2, m.get("FECHA_SALIDA"));
-					stm.setInt(3,Integer.valueOf(m.get("VALOR")));
-					stm.setString(4, m.get("FORMA_PAGO"));
-					stm.execute();
-					ResultSet rs = stm.getGeneratedKeys();
-					
-					while(rs.next()) {
-						JOptionPane.showMessageDialog(null, "La reserva se realizo con éxito, el id de reserva es: "+rs.getInt(1));
-						RegistroHuesped registro = new RegistroHuesped(rs.getInt(1));
-						registro.setVisible(true);
-					}	
-					 
-					con.commit();
-				}catch(Exception e) {
-					con.rollback();
-		
-				}		
-			}
-			
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+	public void gReserva(Reserva r) {
+		ReservasDao rs = new ReservasDao(new CrearConexionFactory().recuperaConexion());
+		rs.gReserva(r);	
 	}
 		
 	//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"	
