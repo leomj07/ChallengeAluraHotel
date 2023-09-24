@@ -76,6 +76,7 @@ El programa solo realiza la conversión de monedas, falta por implementar la par
 ## Personas Desarrolladoras del Proyecto
 
 * **Rodriguez Martinez** - *Developer Java* - **[developer](https://github.com/leomj07/ChallengeAluraHotel.git)**
+* **Rodriguez Martinez** - *Developer Java* - **[developer](https://github.com/leomj07/ChallengeAluraHotel.git)**
 
 
 🧡 <strong>Oracle</strong></br>
