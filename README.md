@@ -1,19 +1,8 @@
 # Challenge ONE | Java | Back-end | Hotel Alura
 
-
-
-<p align="center" >
-     ![Luxury Hotel Presentation](https://github.com/leomj07/ChallengeAluraHotel/assets/13156906/82859f50-cd62-4679-831c-5c609714f111)
-</p>
+ ![Luxury Hotel Presentation](https://github.com/leomj07/ChallengeAluraHotel/assets/13156906/82859f50-cd62-4679-831c-5c609714f111)
 
 ---
-##  Primeros Pasos:
-
-
-#### 🔹 Marca este proyecto con una ⭐
-#### 🔹 Sigue las orientaciones que tenemos en este repositorio. 📚
-#### 🔹 ¡Visita la página del desafío haciendo clic aquí! [Link do Challenge](https://www.aluracursos.com/challenges/oracle-one-back-end/hotelalura) 📃
-</br>
 
 ## 🖥️ Tecnologías Utilizadas:
 
