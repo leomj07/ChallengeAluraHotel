@@ -32,33 +32,26 @@
 *[Licencia](#licencia)
 
 ## Descripción del Proyecto
-¡Bienvenido al primer desafío del Challenge Java!
+¡Bienvenido al más reciente desafío del Challenge Java!
 
-En esta oportunidad, a los Devs se nos solicitó crear un conversor de divisas utilizando el lenguaje Java.
-Las características solicitadas por nuestro cliente son las siguientes:
+El Hotel Alura conocido por su espectaculares instalaciones y paquetes promocionales para Desarrolladores de Software está teniendo problemas para llevar el control de las reservaciones hechas por sus clientes, por eso solicitan nuestra ayuda para desarrollar un sistema de reserva que contenga:
 
-El convertidor de moneda debe:
-
-      - Convertir de la moneda de tu país a Dólar
-      - Convertir de la moneda de tu país  a Euros
-      - Convertir de la moneda de tu país  a Libras Esterlinas
-      - Convertir de la moneda de tu país  a Yen Japonés
-      - Convertir de la moneda de tu país  a Won sul-coreano
-      
-Recordando que también debe ser posible convertir inversamente, es decir:
-
-        - Convertir de Dólar a la moneda de tu país
-        - Convertir de Euros a la moneda de tu país
-        - Convertir de Libras Esterlinas a la moneda de tu país
-        - Convertir de Yen Japonés a la moneda de tu país
-        - Convertir de Won sul-coreano a la moneda de tu país
+  - Sistema de autenticación de usuario para que solo usuarios pertenecientes al hotel consigan acceder al sistema;
+  - Permitir crear, editar y eliminar una reserva para los clientes;
+  - Buscar en la base de datos todas las informaciones tanto de los clientes como de las reservas;
+  - Registrar, editar y eliminar datos de los huéspedes;
+  - Calcular el valor de la reserva en base a la cantidades de días de la reserva y a una tasa diaria que puede ser asignada por ti y en la moneda local de tu país, por ejemplo si tenemos una reserva de 3 dias y el valor de nuestra diaria son 20$ debemos multiplicar esos 3 dias por el valor de la diaria, lo que serian 60$, todo esto deberá ser hecho automaticamente y mostrado al usuario antes de guardar la reserva;
+ - Base de datos para almacenar todos los datos pedidos anteriormente.
 
 ## Estado del proyecto
-El programa solo realiza la conversión de monedas, falta por implementar la parte del calculo de temperatura la cual se encuentra en desarrollo.
+El programa se encuentra terminado deacuerdo a las especificaciones.
 
 ## :hammer: Demostración de funciones y aplicaciones
-- `Funcionalidad 1`: Convertir de la moneda de tu país a Dolar, Euros, Libras Esterlinas, Yen Japonés y Won sul-coreano.
-- `Funcionalidad 2`: Convertir de Dolar, Euros, Libras Esterlinas, Yen Japonés y Won sul-coreano a la moneda de tu país.
+- `Funcionalidad 1`: Autenticación de usuario.
+- `Funcionalidad 2`: Permitir crear, editar y eliminar una reservas.
+- `Funcionalidad 3`: Buscar informaciones tanto de los clientes como de las reservas.
+- `Funcionalidad 4`: Registrar, editar y eliminar datos de los huéspedes.
+- `Funcionalidad 5`: Calcular el valor de la reserva en base a la cantidades de días de la reserva.
 
 ## Acceso al Proyecto
 \## 📁 Acceso al proyecto
