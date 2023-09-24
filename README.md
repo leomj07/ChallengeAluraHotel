@@ -62,7 +62,7 @@ El programa solo realiza la conversión de monedas, falta por implementar la par
 
 ## Acceso al Proyecto
 \## 📁 Acceso al proyecto
-**https://github.com/leomj07/AluraChallengeConversorMonedas.git**
+**https://github.com/leomj07/ChallengeAluraHotel.git**
 ---
 ## 🖥️ Tecnologías Utilizadas:
 
@@ -75,7 +75,6 @@ El programa solo realiza la conversión de monedas, falta por implementar la par
       
 ## Personas Desarrolladoras del Proyecto
 
-* **Rodriguez Martinez** - *Developer Java* - **[developer](https://github.com/leomj07/ChallengeAluraHotel.git)**
 * **Rodriguez Martinez** - *Developer Java* - **[developer](https://github.com/leomj07/ChallengeAluraHotel.git)**
 
 
