@@ -1,7 +1,9 @@
 # Challenge ONE | Java | Back-end | Hotel Alura
 
+
+
 <p align="center" >
-     <img width="300" heigth="300" src="https://user-images.githubusercontent.com/91544872/189419040-c093db78-c970-4960-8aca-ffcc11f7ffaf.png">
+     ![Luxury Hotel Presentation](https://github.com/leomj07/ChallengeAluraHotel/assets/13156906/82859f50-cd62-4679-831c-5c609714f111)
 </p>
 
 ---
