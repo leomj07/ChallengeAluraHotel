@@ -70,6 +70,11 @@ _El Hotel Alura conocido por su espectaculares instalaciones y paquetes promocio
 
 * **Rodriguez Martinez** - *Developer Java* - **[developer](https://github.com/leomj07/ChallengeAluraHotel.git)**
 
+## Licencia.
+
+* Este proyecto está bajo la Licencia (Licencia Pública General Menor de GNU v3.0)
+
+
 
 🧡 <strong>Oracle</strong></br>
 <a href="https://www.linkedin.com/company/oracle/" target="_blank">
